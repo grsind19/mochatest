@@ -13,15 +13,27 @@ describe('AuthController',()=>{
         console.log("Running before each")
         authcontroller.setRoles(['user'])
     })
-    describe('isAuthorised',()=>{
+    describe.only('isAuthorised',()=>{
+        var user ={}
+        beforeEach(function(){
+            user = {
+                roles: ['user'],
+                isAuthorized: function(neededRole){
+                    return this.roles.indexOf(neededRole)>=0
+                }
+            }
+            sinon.spy(user, 'isAuthorized')
+            authcontroller.setUser(user)
+        })
         it('should return false if not authorised',()=>{
            var isAuth = authcontroller.isAuthorized('admin')
+           console.log(user.isAuthorized)
            expect(isAuth).is.to.be.false
-           should
+           
         })
         it('should return true if  authorised',()=>{
-            authcontroller.setRoles(['user','admin'])
-            var isAuth = authcontroller.isAuthorized('admin')
+            authcontroller.setRoles(['user'])
+            var isAuth = authcontroller.isAuthorized('user')
             isAuth.should.be.true
          })
         it('should not allow get if not authorized')
