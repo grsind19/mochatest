@@ -16,7 +16,10 @@ function AuthController(){
         })
        
     }
-    return {isAuthorized, isAuthorizedAsync, isAuthorizedPromise, setRoles}
+    function getIndex(req, res){
+        res.render('index')
+    }
+    return {isAuthorized, isAuthorizedAsync, isAuthorizedPromise, setRoles, getIndex}
 }
 
 module.exports = AuthController()
