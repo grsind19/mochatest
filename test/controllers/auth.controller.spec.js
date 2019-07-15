@@ -1,5 +1,6 @@
 const assert = require('assert')
 var authcontroller = require('../../controllers/auth.controller')
+var expect = require('chai').expect;
 
 describe('AuthController',()=>{
     beforeEach(function(){
@@ -8,7 +9,8 @@ describe('AuthController',()=>{
     })
     describe('isAuthorised',()=>{
         it('should return false if not authorised',()=>{
-            assert.equal(false, authcontroller.isAuthorized('admin'))
+           var isAuth = authcontroller.isAuthorized('admin')
+           expect(isAuth).is.to.be.false
         })
         it('should not allow get if not authorized')
         it('should allow get if authorized')
