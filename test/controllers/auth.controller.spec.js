@@ -68,7 +68,7 @@ describe('AuthController',()=>{
             }
         });
         it('should render index', function(){
-            var isAuth = sinon.stub(user, 'isAuthorized').returns(true)
+            var isAuth = sinon.stub(user, 'isAuthorized').returns(false)
             var req = {user: user}
             var res ={
                 render: sinon.spy()
@@ -76,7 +76,7 @@ describe('AuthController',()=>{
             authcontroller.getIndex(req, res)
             isAuth.calledOnce.should.be.true
             res.render.calledOnce.should.be.true
-            res.render.firstCall.args[0].should.equal('index')
+            res.render.firstCall.args[0].should.equal('error')
         })
     })
 })
