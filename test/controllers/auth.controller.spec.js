@@ -13,7 +13,7 @@ describe('AuthController',()=>{
         console.log("Running before each")
         authcontroller.setRoles(['user'])
     })
-    describe.only('isAuthorised',()=>{
+    describe('isAuthorised',()=>{
         var user ={}
         beforeEach(function(){
             user = {
@@ -28,6 +28,7 @@ describe('AuthController',()=>{
         it('should return false if not authorised',()=>{
            var isAuth = authcontroller.isAuthorized('admin')
            console.log(user.isAuthorized)
+           user.isAuthorized.calledOnce.should.be.true
            expect(isAuth).is.to.be.false
            
         })
@@ -56,13 +57,24 @@ describe('AuthController',()=>{
         })
     })
 
-    describe('getIndex',function(){
+    describe.only('getIndex',function(){
+        var user ={}
+        beforeEach(function(){
+            user = {
+                roles: ['user'],
+                isAuthorized: function(neededRole){
+                    return this.roles.indexOf(neededRole)>=0
+                }
+            }
+        });
         it('should render index', function(){
-            var req = {}
+            var isAuth = sinon.stub(user, 'isAuthorized').returns(true)
+            var req = {user: user}
             var res ={
                 render: sinon.spy()
             }
             authcontroller.getIndex(req, res)
+            isAuth.calledOnce.should.be.true
             res.render.calledOnce.should.be.true
             res.render.firstCall.args[0].should.equal('index')
         })
