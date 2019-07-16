@@ -68,15 +68,16 @@ describe('AuthController',()=>{
             }
         });
         it('should render index', function(){
-            var isAuth = sinon.stub(user, 'isAuthorized').returns(false)
+            var isAuth = sinon.stub(user, 'isAuthorized').returns(true)
             var req = {user: user}
             var res ={
-                render: sinon.spy()
+                render: function(){}
             }
+            var mock = sinon.mock(res)
+            mock.expects('render').once().withExactArgs('index')
             authcontroller.getIndex(req, res)
             isAuth.calledOnce.should.be.true
-            res.render.calledOnce.should.be.true
-            res.render.firstCall.args[0].should.equal('error')
+            mock.verify()
         })
     })
 })
